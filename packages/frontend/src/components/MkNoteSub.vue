@@ -141,10 +141,15 @@ const isRenote = (
 	props.note.poll == null
 );
 
+async function addReplyTo(note, replyNote: MkNote) {
+		replies.append(replyNote);
+}
+
 useNoteCapture({
 	rootEl: el,
 	note: $$(appearNote),
 	isDeletedRef: isDeleted,
+	onReplyCallback: depth < numberOfReplies ? addReplyTo : undefined,
 });
 
 if ($i) {

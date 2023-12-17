@@ -771,6 +771,9 @@ export class NoteCreateService implements OnApplicationShutdown {
 
 			// If has in reply to note
 			if (data.reply) {
+				this.globalEventService.publishNoteStream(data.reply.id, 'replied', {
+					note: note,
+				});
 				// 通知
 				if (data.reply.userHost === null) {
 					const isThreadMuted = await this.noteThreadMutingsRepository.exist({
@@ -951,7 +954,7 @@ export class NoteCreateService implements OnApplicationShutdown {
 				removeOnComplete: true,
 			});
 		}
-		
+
 		// Pack the note
 		const noteObj = await this.noteEntityService.pack(note, null, { skipHide: true, withReactionAndUserPairCache: true });
 

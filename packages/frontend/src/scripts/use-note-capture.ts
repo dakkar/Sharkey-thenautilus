@@ -14,7 +14,7 @@ export function useNoteCapture(props: {
 	note: Ref<Misskey.entities.Note>;
 	pureNote: Ref<Misskey.entities.Note>;
 	isDeletedRef: Ref<boolean>;
-	onReplyCallback: something;
+	onReplyCallback: (note, replyNote: Ref<Misskey.entities.Note>) => void | undefined;
 }) {
 	const note = props.note;
 	const pureNote = props.pureNote !== undefined ? props.pureNote : props.note;
@@ -29,10 +29,7 @@ export function useNoteCapture(props: {
 			case 'replied': {
 				if (!onReplyCallback) break;
 
-				const { id: createdId } = body;
- 				const replyNote = await os.api("notes/show", {
- 					noteId: createdId,
- 				});
+ 				const replyNote = body.note;
 				await onReplyCallback(pureNote, replyNote);
 				break;
 			}

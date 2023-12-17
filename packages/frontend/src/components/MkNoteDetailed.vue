@@ -373,21 +373,8 @@ const reactionsPagination = $computed(() => ({
 	},
 }));
 
-const childNotesMap = {
-	appearNote.id: appearNote,
-	note.id: note,
-};
-
 async function addReplyTo(note, replyNote: MkNote) {
-		// make the replyNote appear as a child of the note
-
-		// then, subscribe to updates for it!
-		useNoteCapture({
-			rootEl: el,
-			note: $$(replyNote),
-			isDeletedRef: /* a new boolean ref for this note */,
-			onReplyCallback: addReplyTo,
-		});
+		conversation.append(replyNote);
 }
 
 useNoteCapture({
@@ -738,14 +725,6 @@ function loadReplies() {
 		showQuotes: false,
 	}).then(res => {
 		replies.value = res;
-		for (note in res) {
-			useNoteCapture({
-				rootEl: el,
-				note: $$(note),
-				isDeletedRef: /* a new boolean ref for this note */,
-				onReplyCallback: addReplyTo,
-			});
-		}
 	});
 }
 
